@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-from re import sub, search
 
 import re
 
-def filter_datum(fields, redaction, message, separator):
+def filter_datum(fields: str, redaction: str, message: str, separator: str) -> str:
     return re.sub(r'(' + '|'.join(map(re.escape, fields)) + r')=[^;]*', lambda m: m.group(0).split('=')[0] + '=' + redaction, message)
    
 
