@@ -5,7 +5,7 @@ Module for handling Personal Data
 import bcrypt
 
 
-def hash_password(password:str) -> bytes:
+def hash_password(password: str) -> bytes:
     """
     Module for handling Personal Data
     """
