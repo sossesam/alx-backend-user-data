@@ -67,6 +67,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
                                                      database=db_name)
     return cnx
 
+
 def main():
     """
     Obtain a database connection using get_db and retrieves all rows
