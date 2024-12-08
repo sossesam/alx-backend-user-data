@@ -2,6 +2,7 @@
 """
 Module for handling Personal Data
 """
+from collections.abc import Mapping
 import re
 from typing import List
 import logging
