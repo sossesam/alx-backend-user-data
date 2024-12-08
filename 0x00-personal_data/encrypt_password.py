@@ -5,12 +5,12 @@ Module for handling Personal Data
 import bcrypt
 
 
-def hash_password(password:str) -> str:
+def hash_password(password:str) -> bytes:
     """
     Module for handling Personal Data
     """
 
     salt = bcrypt.gensalt()
-    hashed_password = bcrypt.hashpw(password.encode("utf-8"), salt)
+    hashed_password = bcrypt.hashpw(password.encode(), salt)
 
-    return bytes(hashed_password)
+    return hashed_password
