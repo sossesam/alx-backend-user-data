@@ -32,6 +32,7 @@ def unauthorized(error) -> str:
 def unauthorized(error) -> str:
     """ Not found handler
     """
+    request.method()
     return jsonify({"error": "Forbidden"}), 403
 
 
