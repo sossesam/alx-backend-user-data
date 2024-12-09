@@ -32,7 +32,7 @@ def unauthorized(error) -> str:
 def unauthorized(error) -> str:
     """ Not found handler
     """
-    return jsonify({"Forbidden": "Unauthorized"}), 403
+    return jsonify({"error": "Forbidden"}), 403
 
 
 if __name__ == "__main__":
