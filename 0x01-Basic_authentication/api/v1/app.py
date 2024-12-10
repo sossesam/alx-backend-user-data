@@ -12,6 +12,33 @@ import os
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
+auth = None
+
+if getenv("AUTH_TYPE") == "auth":
+    """Placehoder for documentation"""
+    from api.v1.auth.auth import Auth
+    print("auth found")
+    auth = Auth()
+
+app.before_request
+def before_request():
+    """Placehoder for documentation"""
+    allowed_path = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+
+    if auth is None:
+        return
+    
+    if not auth.require_auth(request.path, allowed_path):
+        return
+    
+    if auth.authorization_header(request) == None:
+        return abort(401)
+
+    if auth.current_user(request) == None:
+        return abort(403)
+
+
+
 
 
 @app.errorhandler(404)

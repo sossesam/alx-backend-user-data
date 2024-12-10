@@ -32,12 +32,13 @@ class Auth:
     def authorization_header(self, request=None) -> str:
         """ Module of Index views
         """
-        if request is None:
+        key = "Authorization"
+        if request is None or key not in request.headers:
             return None
         
-        return request.headers.get("Authorization", None)
+        return request.headers.get()
 
-    def current_user(self, request=None) -> TypeVar('User'):
+    def current_user(self, request=None) -> None:
         """ Module of Index views
         """
         return None
