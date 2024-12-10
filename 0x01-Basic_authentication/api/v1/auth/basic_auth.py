@@ -3,7 +3,7 @@
 """
 
 from flask import request
-from typing import TypeVar, List
+from typing import TypeVar, List, Tuple
 from api.v1.auth.auth import Auth
 import base64
 
@@ -40,3 +40,26 @@ class BasicAuth(Auth):
             return decoded
         except BaseException:
             return None
+        
+    
+    def extract_user_credentials(self,
+                                 decoded_base64_authorization_header: str
+                                 ) -> Tuple[str, str]:
+        """
+        Returns the user email and password from the
+        Base64 decoded value
+        """
+
+        if decoded_base64_authorization_header is None:
+            return None, None
+
+        if not isinstance(decoded_base64_authorization_header, str):
+            return None, None
+
+        if ':' not in decoded_base64_authorization_header:
+            return None, None
+
+        credentials = decoded_base64_authorization_header.split(':', 1)
+
+        return credentials[0], credentials[1]
+
