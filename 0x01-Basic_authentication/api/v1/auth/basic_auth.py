@@ -24,13 +24,14 @@ class BasicAuth(Auth):
         return encoded
 
     def decode_base64_authorization_header(self,
-                                           base64_authorization_header: str) -> str:
+                                           base64_authorization_header: str
+                                           ) -> str:
         """Placehoder for documentation"""
         if base64_authorization_header is None:
             return None
         if type(base64_authorization_header) is not str:
             return None
-        
+
         try:
             encoded = base64_authorization_header.encode('utf-8')
             decoded64 = base64.b64decode(encoded)
@@ -39,4 +40,3 @@ class BasicAuth(Auth):
             return decoded
         except BaseException:
             return None
-
