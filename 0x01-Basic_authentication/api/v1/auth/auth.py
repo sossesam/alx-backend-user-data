@@ -36,7 +36,7 @@ class Auth:
         if request is None or key not in request.headers:
             return None
         
-        return request.headers.get()
+        return request.headers.get("Authorization", None)
 
     def current_user(self, request=None) -> None:
         """ Module of Index views

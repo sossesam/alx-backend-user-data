@@ -13,31 +13,11 @@ app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = None
+AUTH_TYPE = getenv("AUTH_TYPE")
 
-if getenv("AUTH_TYPE") == "auth":
-    """Placehoder for documentation"""
+if AUTH_TYPE == "auth":
     from api.v1.auth.auth import Auth
-    print("auth found")
     auth = Auth()
-
-app.before_request
-def before_request():
-    """Placehoder for documentation"""
-    allowed_path = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
-
-    if auth is None:
-        return
-    
-    if not auth.require_auth(request.path, allowed_path):
-        return
-    
-    if auth.authorization_header(request) == None:
-        return abort(401)
-
-    if auth.current_user(request) == None:
-        return abort(403)
-
-
 
 
 
@@ -59,9 +39,26 @@ def unauthorized(error) -> str:
 def unauthorized(error) -> str:
     """ Not found handler
     """
-    request.method()
+    
     return jsonify({"error": "Forbidden"}), 403
 
+@app.before_request
+def before_requesting():
+    """Placehoder for documentation"""
+    
+    if auth is None:
+        return
+    
+    allowed_path = ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']
+    
+    if not auth.require_auth(request.path, allowed_path):
+        return
+    
+    if auth.authorization_header(request) is None:
+        abort(401)
+
+    if auth.current_user(request) is None:
+        abort(403)
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
