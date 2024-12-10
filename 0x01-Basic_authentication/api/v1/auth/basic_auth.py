@@ -40,8 +40,7 @@ class BasicAuth(Auth):
             return decoded
         except BaseException:
             return None
-        
-    
+
     def extract_user_credentials(self,
                                  decoded_base64_authorization_header: str
                                  ) -> Tuple[str, str]:
@@ -62,4 +61,3 @@ class BasicAuth(Auth):
         credentials = decoded_base64_authorization_header.split(':', 1)
 
         return credentials[0], credentials[1]
-
