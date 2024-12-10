@@ -11,23 +11,31 @@ class Auth:
     """
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """ Module of Index views
-        """
-        if path is None:
+        """ Method for validating if endpoint requires auth """
+        if path is None or excluded_paths is None or excluded_paths == []:
             return True
 
-        if excluded_paths is None or len(excluded_paths) == 0:
+        l_path = len(path)
+        if l_path == 0:
             return True
 
-        if path[len(path)-1] != "/":
-            path += "/"
+        slash_path = True if path[l_path - 1] == '/' else False
 
-        if path in excluded_paths:
-            return False
-        if path not in excluded_paths:
-            return True
+        tmp_path = path
+        if not slash_path:
+            tmp_path += '/'
 
-        return False
+        for exc in excluded_paths:
+            l_exc = len(exc)
+            if l_exc == 0:
+                continue
+
+            if exc[l_exc - 1] != '*':
+                if tmp_path == exc:
+                    return False
+            else:
+                if exc[:-1] == path[:l_exc - 1]:
+                    return False
 
     def authorization_header(self, request=None) -> str:
         """ Module of Index views
