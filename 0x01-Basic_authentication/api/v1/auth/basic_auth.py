@@ -61,9 +61,9 @@ class BasicAuth(Auth):
         credentials = decoded_base64_authorization_header.split(':', 1)
 
         return credentials[0], credentials[1]
-    
+
     def user_object_from_credentials(self, user_email: str,
-                                     user_pwd: str) -> TypeVar('User'):
+                                     user_pwd: str) -> None:
         """
         Returns the User instance based on his
         email and password
@@ -85,8 +85,7 @@ class BasicAuth(Auth):
 
         return None
 
-
-    def current_user(self, request=None) -> TypeVar('User'):
+    def current_user(self, request=None) -> None:
         """ overloads Auth and retrieves the User instance for a request """
         auth_header = self.authorization_header(request)
 
