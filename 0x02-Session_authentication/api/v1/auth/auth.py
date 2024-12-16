@@ -14,13 +14,13 @@ class Auth:
         """ Method for validating if endpoint requires auth """
         if path is None or excluded_paths is None or excluded_paths == []:
             return True
-        
+
         for link in excluded_paths:
             if link[-1] != "/":
-                link =link + "/"
+                link = link + "/"
 
         if path[-1] != "/":
-                path = path + "/"
+            path = path + "/"
 
         if path in excluded_paths:
             return False
