@@ -4,6 +4,7 @@
 
 from flask import request
 from typing import TypeVar, List
+from os import getenv
 
 
 class Auth:
@@ -40,3 +41,13 @@ class Auth:
         """ Module of Index views
         """
         return None
+
+    def session_cookie(self, request=None):
+        """ Module of Index views
+        """
+        if request is None:
+            return None
+
+        session_name = getenv("SESSION_NAME")
+        session_cookie = request.cookies.get(session_name)
+        return session_cookie
