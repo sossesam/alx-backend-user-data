@@ -8,6 +8,7 @@ from sqlalchemy import Column, Integer, String
 engine = create_engine('sqlite:///:memory:', echo=True)
 Base = declarative_base()
 
+
 class User(Base):
     """ Placeholder for documentation"""
     __tablename__ = 'users'
