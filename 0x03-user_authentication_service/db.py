@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """DB module
 """
 from sqlalchemy import create_engine
@@ -42,5 +43,4 @@ class DB:
         else:
             self._session.commit()
         return new_user
-
        
