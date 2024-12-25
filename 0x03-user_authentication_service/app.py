@@ -30,6 +30,33 @@ def users() -> str:
         return jsonify({"email": email, "message": "user created"})
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
+    
+@app.route("/sessions", methods=["POST"], strict_slashes=False)
+def login() -> str:
+    """POST /sessions
+    Return:
+        - The account login payload.
+    """
+    email, password = request.form.get("email"), request.form.get("password")
+    if not AUTH.valid_login(email, password):
+        abort(401)
+    session_id = AUTH.create_session(email)
+    response = jsonify({"email": email, "message": "logged in"})
+    response.set_cookie("session_id", session_id)
+    return response
+    
+@app.route("/sessions", methods=["DELETE"], strict_slashes=False)
+def logout() -> str:
+    """DELETE /sessions
+    Return:
+        - Redirects to home route.
+    """
+    session_id = request.cookies.get("session_id")
+    user = AUTH.get_user_from_session_id(session_id)
+    if user is None:
+        abort(403)
+    AUTH.destroy_session(user.id)
+    return redirect("/")
 
 
 

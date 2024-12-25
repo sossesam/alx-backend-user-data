@@ -9,6 +9,10 @@ from sqlalchemy.orm.exc import NoResultFound
 from db import DB
 from user import User
 
+def _generate_uuid() -> str:
+    """Generates a UUID.
+    """
+    return str(uuid4())
 
 def _hash_password(password: str) -> bytes:
     """Hashes a password.
@@ -32,6 +36,7 @@ class Auth:
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
         raise ValueError("User {} already exists".format(email))
+    
     def valid_login(self, email: str, password: str) -> bool:
         """Checks if a user's login details are valid.
         """
@@ -46,3 +51,29 @@ class Auth:
         except NoResultFound:
             return False
         return False
+    
+    def create_session(self, email: str) -> str:
+        """Creates a new session for a user.
+        """
+        user = None
+        try:
+            user = self._db.find_user_by(email=email)
+        except NoResultFound:
+            return None
+        if user is None:
+            return None
+        session_id = _generate_uuid()
+        self._db.update_user(user.id, session_id=session_id)
+        return session_id
+    
+    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
+        """Retrieves a user based on a given session ID.
+        """
+        user = None
+        if session_id is None:
+            return None
+        try:
+            user = self._db.find_user_by(session_id=session_id)
+        except NoResultFound:
+            return None
+        return user
