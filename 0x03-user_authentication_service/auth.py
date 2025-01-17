@@ -9,15 +9,18 @@ from sqlalchemy.orm.exc import NoResultFound
 from db import DB
 from user import User
 
+
 def _generate_uuid() -> str:
     """Generates a UUID.
     """
     return str(uuid4())
 
+
 def _hash_password(password: str) -> bytes:
     """Hashes a password.
     """
     return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+
 
 class Auth:
     """Auth class to interact with the authentication database.
@@ -36,7 +39,7 @@ class Auth:
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
         raise ValueError("User {} already exists".format(email))
-    
+
     def valid_login(self, email: str, password: str) -> bool:
         """Checks if a user's login details are valid.
         """
@@ -51,7 +54,7 @@ class Auth:
         except NoResultFound:
             return False
         return False
-    
+
     def create_session(self, email: str) -> str:
         """Creates a new session for a user.
         """
@@ -65,7 +68,7 @@ class Auth:
         session_id = _generate_uuid()
         self._db.update_user(user.id, session_id=session_id)
         return session_id
-    
+
     def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
         """Retrieves a user based on a given session ID.
         """
@@ -77,7 +80,7 @@ class Auth:
         except NoResultFound:
             return None
         return user
-    
+
     def destroy_session(self, user_id: int) -> None:
         """Destroys a session associated with a given user.
         """
