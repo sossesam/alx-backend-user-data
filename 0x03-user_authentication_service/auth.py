@@ -35,10 +35,13 @@ class Auth:
         """Adds a new user to the database.
         """
         try:
-            self._db.find_user_by(email=email)
+            user = self._db.find_user_by(email=email)
+
+            if user:
+                raise ValueError("User {} already exists".format(email))
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
-        raise ValueError("User {} already exists".format(email))
+        
 
     def valid_login(self, email: str, password: str) -> bool:
         """Checks if a user's login details are valid.
