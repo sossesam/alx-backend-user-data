@@ -59,8 +59,10 @@ class DB:
             else:
                 raise InvalidRequestError
 
-   
     def update_user(self, user_id: int, **kwargs) -> None:
+        """Update a user based on a set of filters.
+
+        """
 
         user = self.find_user_by(id=user_id)
         if user is None:
@@ -76,4 +78,3 @@ class DB:
             synchronize_session=False,
         )
         self._session.commit()
-        
