@@ -45,19 +45,24 @@ class DB:
         return new_user
 
     def find_user_by(self, **kwargs) -> User:
-        """Finds a user based on a set of filters.
+        """Finds a user based on a set of filters."""
 
-        """
-        for key, value in kwargs.items():
-            if hasattr(User, key):
-                user = self.__session.query(User).filter_by(**kwargs).first()
-                if user is None:
-                    raise NoResultFound
-                else:
-                    return user
+        if self.__session is None:
+            self._session
+        
+        # Check if all keys in kwargs are valid attributes of the User class
+        for key in kwargs:
+            if not hasattr(User, key):
+                raise InvalidRequestError(f"Invalid attribute: {key}")
 
-            else:
-                raise InvalidRequestError
+        # Query the User table with the provided filters
+        user = self.__session.query(User).filter_by(**kwargs).first()
+        
+        # If no user is found, raise NoResultFound
+        if user is None:
+            raise NoResultFound("User not found based on the provided filters.")
+        
+        return user
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """Update a user based on a set of filters.
