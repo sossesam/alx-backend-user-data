@@ -43,16 +43,19 @@ class DB:
         return new_user
 
     def find_user_by(self, **kwargs) -> User:
-            """Finds a user based on a set of filters.
+        """Finds a user based on a set of filters.
 
-            """
-            
-            user = self._session.query(User).filter_by(**kwargs).first()
-           
-            if user:
-                return user
+        """
+        for key, value in kwargs.items():
+            if hasattr(User, key):
+                user = self.__session.query(User).filter_by(**kwargs).first()
+                if user is None:
+                    raise NoResultFound
+                else:
+                    return user
+                
             else:
-                raise NoResultFound
+                raise InvalidRequestError
 
             
                 
