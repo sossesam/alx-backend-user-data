@@ -10,6 +10,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from user import Base, User
 
+
 class DB:
     """DB class
     """
@@ -54,21 +55,13 @@ class DB:
                     raise NoResultFound
                 else:
                     return user
-                
+
             else:
                 raise InvalidRequestError
 
-            
-                
-
-
-
-            
-            
-            
     """
     def update_user(self, user_id: int, **kwargs) -> None:
-        
+
         user = self.find_user_by(id=user_id)
         if user is None:
             return
